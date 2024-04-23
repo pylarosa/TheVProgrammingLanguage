@@ -36,12 +36,15 @@ public:
                 if (buf == "exit") {
                     tokens.push_back({.type = TokenType::exit});
                     buf.clear();
+
                 } else {
                     std::cerr << "You messed up" << std::endl;
                     exit(EXIT_FAILURE);
                 }
+
             } else if (std::isdigit(peek().value())) {
                 buf.push_back(consume());
+
                 while (peek().has_value() && std::isdigit(peek().value())) {
                     buf.push_back(consume());
                     tokens.push_back({.type = TokenType::int_lit, .value = buf});
@@ -50,7 +53,7 @@ public:
             } else if (peek().value() == ';') {
                 consume();
                 tokens.push_back({.type = TokenType::semi});
-            } else if (std::isspace(peek().value())){
+            } else if (std::isspace(peek().value())) {
                 consume();
             } else {
                 std::cerr << "You messed up 2" << std::endl;
@@ -65,9 +68,8 @@ private:
     [[nodiscard]] std::optional<char> peek(int ahead = 1) const {
         if (m_index + ahead > m_src.length()) {
             return {};
-        } else {
-            return m_src.at(m_index);
         }
+        return m_src.at(m_index);
     }
 
     char consume() {
